@@ -26,7 +26,7 @@ static const unsigned char PROGMEM SFX_tree[] =//5x5 offset 14x2
 	B10001111, B10110011, B11101000, B10000000
 };
 void display_init()
-{
+{/*
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
   {
     display_ok = false;
@@ -42,9 +42,10 @@ void display_init()
     display.display();
     delay(1000);
   }
+  */
 }
 void display_loop()
-{
+{/*
   if (display_ok)
   {
     //drawing display
@@ -178,4 +179,5 @@ void display_loop()
 	display.print(mp3file);
     display.display();
   }
+  */
 }

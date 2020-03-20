@@ -1,5 +1,6 @@
 void controller_init()
 {
+  /*
   joy_error = ps2x.config_gamepad(8,10,9,11, false, false);   //setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
   if(joy_error == 0)
   {
@@ -24,9 +25,11 @@ void controller_init()
       Serial.println("DualShock Controller Found");
       break;
   }
+  */
 }
 void controller_loop()
 {
+  /*
   if(joy_error == 1) //skip loop if no controller found
   {
     return; 
@@ -115,6 +118,7 @@ void controller_loop()
     audiocontrol = 0;
   }
  }
+ */
 }
 	//TESTING CRAP
 	/* 
