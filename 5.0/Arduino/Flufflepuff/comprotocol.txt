@@ -1,0 +1,49 @@
+Info to Command Echo bits.
+Remote changes a command bit to 1 and leaves it at 1, until the main echoes with 1.
+Then the Remote changes it back to 0. (for single commands, to not send multiple edges around)
+
+-- Main Sends Packet --
+
+Protocol in HEX:
+
+41        Message Header (0x41 = "A")
+13        Number of Bytes to follow after this one
+
+02        Battery Index
+06        Battery Level of given Index
+
+01        System State Bits.
+            b0=Autokill, b1=Manual Kill, b2=Boost
+01        System Command Echo Bits.
+            b0=Boost, b1=Manual Kill, b2=Kill Reset, b3=Action Ack
+03        Media Player State Bits.
+            b0=Stop, b1=Play, b2=Pause, b5=Card, b6=USB, b7=BT
+01        Media Player Command Echo Bits.
+            b0=Stop, b1=Play, b2=Pause, b3=Prev, b4=Next, b5=Card, b6=USB, b7=BT
+
+13        Media Player current song position in [sec]
+26        Media Player current song total length in [sec]
+
+01        Media Player current song title packet index (0-199), at 0 it resets the display buffer
+
+50 46 55 44    Media Player current song title packet in ASCII or prefered encoding
+4f 52 20 52    one packet may only be 8 bytes long. 200x8-1 (0x00) = 1600 chars including nullbyte
+
+00 FF        CRC of the entire message before the CRC
+
+
+-- Remote responds --
+
+61        Message Header (0x61 = "a")
+07        Number of Bytes to follow after this one
+
+AF        System Command Analog Throttle
+BC        System Command Analog Steering
+00        System Command Special Action (1-255)
+
+01        System Command Bits:
+            b0=Boost, b1=Manual Kill, b2=Kill Reset, b3=Action, b4=Battery Next Index, b5=MediaPlayer Next Text Packet
+01        Media Player Command Bits:
+            b0=Stop, b1=Play, b2=Pause, b3=Prev, b4=Next, b5=Card, b6=USB, b7=BT
+
+00 FF        CRC of the entire Message before the CRC
