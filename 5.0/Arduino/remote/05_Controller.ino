@@ -1,7 +1,6 @@
 void controller_init()
 {
-  /*
-  joy_error = ps2x.config_gamepad(8,10,9,11, false, false);   //setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
+  joy_error = ps2x.config_gamepad(5,4,3,2, false, false);   //setup pins and settings:  GamePad(clock, command, attention, data, Pressures?, Rumble?) check for error
   if(joy_error == 0)
   {
     Serial.println("Found Controller, configured successful");
@@ -25,18 +24,17 @@ void controller_init()
       Serial.println("DualShock Controller Found");
       break;
   }
-  */
 }
 void controller_loop()
 {
-  /*
   if(joy_error == 1) //skip loop if no controller found
   {
     return; 
   }
   else
-  { //DualShock Controller
-    ps2x.read_gamepad(false, 0);          //read controller and set large motor to spin at 'vibrate' speed
+  {
+    //DualShock Controller
+    ps2x.read_gamepad(false, 0);
     if(ps2x.ButtonPressed(PSB_L2))
     {
       onehanded = true;
@@ -45,11 +43,12 @@ void controller_loop()
     {
       onehanded = false;
     }
-
+    
     //read out the analog sticks
     if (controller_firstboot)
     {
-      if ((ps2x.Analog(PSS_LY) == 255) && (ps2x.Analog(PSS_LX) == 255) && (ps2x.Analog(PSS_RY) == 255) && (ps2x.Analog(PSS_RX) == 255))
+      if ((ps2x.Analog(PSS_LY) == 255) && (ps2x.Analog(PSS_LX) == 255)
+      && (ps2x.Analog(PSS_RY) == 255) && (ps2x.Analog(PSS_RX) == 255))
       {
         trottle = 128;
         steering = 128;
@@ -73,22 +72,74 @@ void controller_loop()
       }
     }
     trottle = 255-trottle;
-	if ((!ps2x.Button(PSB_R2)) && (ps2x.Button(PSB_R1)))
-	{
-		fxbank = 1;
-	}
+    if(ps2x.ButtonPressed(PSB_L1))
+    {
+      boosting = true;
+    }
+    else if (ps2x.ButtonReleased(PSB_L1))
+    {
+      boosting = false;
+    }
+	  if ((!ps2x.Button(PSB_R2)) && (ps2x.Button(PSB_R1)))
+	  {
+      fxbank1 = false;
+      fxbank2 = true;
+      fxbank3 = false;
+      fxbank4 = false;
+	  }
     else if ((ps2x.Button(PSB_R2)) && (!ps2x.Button(PSB_R1)))
-	{
-		fxbank = 2;
-	}
-    else if ((ps2x.Button(PSB_R2)) && (ps2x.Button(PSB_R1)))
-	{
-		fxbank = 3;
-	}
+	  {
+      fxbank1 = false;
+      fxbank2 = false;
+      fxbank3 = true;
+      fxbank4 = false;
+	  }
+      else if ((ps2x.Button(PSB_R2)) && (ps2x.Button(PSB_R1)))
+	  {
+      fxbank1 = false;
+      fxbank2 = false;
+      fxbank3 = false;
+      fxbank4 = true;
+	  }
     else if ((!ps2x.Button(PSB_R2)) && (!ps2x.Button(PSB_R1)))
-	{
-		fxbank = 0;
-	}
+	  {
+      fxbank1 = true;
+      fxbank2 = false;
+      fxbank3 = false;
+      fxbank4 = false;
+	  }
+    if(ps2x.ButtonPressed(PSB_GREEN))
+    {
+      Action1 = true;
+    }
+    else if (ps2x.ButtonReleased(PSB_GREEN))
+    {
+      Action1 = false;
+    }
+    if(ps2x.ButtonPressed(PSB_RED))
+    {
+      Action2 = true;
+    }
+    else if (ps2x.ButtonReleased(PSB_RED))
+    {
+      Action2 = false;
+    }
+    if(ps2x.ButtonPressed(PSB_PINK))
+    {
+      Action3 = true;
+    }
+    else if (ps2x.ButtonReleased(PSB_PINK))
+    {
+      Action3 = false;
+    }
+    if(ps2x.ButtonPressed(PSB_BLUE))
+    {
+      Action4 = true;
+    }
+    else if (ps2x.ButtonReleased(PSB_BLUE))
+    {
+      Action4 = false;
+    }
   if (ps2x.Button(PSB_PAD_UP))
   {
     Audio_volume++;
@@ -118,12 +169,11 @@ void controller_loop()
     audiocontrol = 0;
   }
  }
- */
 }
 	//TESTING CRAP
 	/* 
 	
-    if(ps2x.ButtonPressed(PSB_START))                   //will be TRUE as long as button is pressed
+    if(ps2x.ButtonPressed(PSB_START))           //will be TRUE as long as button is pressed
       Serial.println("Start is being held");
     if(ps2x.ButtonPressed(PSB_SELECT))
       Serial.println("Select is being held");

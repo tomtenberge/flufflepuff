@@ -2,12 +2,12 @@ Info to Command Echo bits.
 Remote changes a command bit to 1 and leaves it at 1, until the main echoes with 1.
 Then the Remote changes it back to 0. (for single commands, to not send multiple edges around)
 
--- Main Sends Packet --
+-- Main response (slave) --
 
 Protocol in HEX:
 
 41        Message Header (0x41 = "A")
-13        Number of Bytes to follow after this one
+19        Number of Bytes to follow after this one
 
 02        Battery Index
 06        Battery Level of given Index
@@ -15,14 +15,16 @@ Protocol in HEX:
 01        System State Bits.
             b0=Autokill, b1=Manual Kill, b2=Boost
 01        System Command Echo Bits.
-            b0=Boost, b1=Manual Kill, b2=Kill Reset, b3=Action Ack
+            b0=Boost, b1=Manual Kill, b2=Kill Reset, b3=Action Ack, b4=Battery Next Index,
+			b5=MediaPlayer Next Text Packet, b6=MediaPlayer show song length (0 = currentpos)
 03        Media Player State Bits.
-            b0=Stop, b1=Play, b2=Pause, b5=Card, b6=USB, b7=BT
+            b0=Stop, b1=Play, b2=Pause, b3=songlengthindicator(0=pos,1=len) b5=Card, b6=USB, b7=BT
 01        Media Player Command Echo Bits.
             b0=Stop, b1=Play, b2=Pause, b3=Prev, b4=Next, b5=Card, b6=USB, b7=BT
 
 13        Media Player current song position in [sec]
 26        Media Player current song total length in [sec]
+		  indicator tells what it is. maxes at 65535 sec, around 18h.
 
 01        Media Player current song title packet index (0-199), at 0 it resets the display buffer
 
@@ -32,7 +34,7 @@ Protocol in HEX:
 00 FF        CRC of the entire message before the CRC
 
 
--- Remote responds --
+-- Remote send packet (master) --
 
 61        Message Header (0x61 = "a")
 07        Number of Bytes to follow after this one
@@ -42,7 +44,8 @@ BC        System Command Analog Steering
 00        System Command Special Action (1-255)
 
 01        System Command Bits:
-            b0=Boost, b1=Manual Kill, b2=Kill Reset, b3=Action, b4=Battery Next Index, b5=MediaPlayer Next Text Packet
+            b0=Boost, b1=Manual Kill, b2=Kill Reset, b3=Action, b4=Battery Next Index,
+			b5=MediaPlayer Next Text Packet, b6=MediaPlayer show song length (0 = currentpos)
 01        Media Player Command Bits:
             b0=Stop, b1=Play, b2=Pause, b3=Prev, b4=Next, b5=Card, b6=USB, b7=BT
 

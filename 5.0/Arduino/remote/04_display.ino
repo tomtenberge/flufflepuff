@@ -26,7 +26,7 @@ static const unsigned char PROGMEM SFX_tree[] =//5x5 offset 14x2
 	B10001111, B10110011, B11101000, B10000000
 };
 void display_init()
-{/*
+{
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
   {
     display_ok = false;
@@ -42,10 +42,9 @@ void display_init()
     display.display();
     delay(1000);
   }
-  */
 }
 void display_loop()
-{/*
+{
   if (display_ok)
   {
     //drawing display
@@ -150,25 +149,23 @@ void display_loop()
       (display.height() - LOGO_HEIGHT) / 2,
       logo_bmp, LOGO_WIDTH, LOGO_HEIGHT, 1);
     }
-	switch(fxbank)
-	{
-		case 0:
-		break;
-		case 1:
-		  display.drawBitmap(61,15,SFX_btn,20,8,1);
-		  display.drawBitmap(75,17,SFX_one,5,5,1);
-		break;
-		case 2:
-		  display.drawBitmap(82,15,SFX_btn,20,8,1);
+	if (fxbank2)
+  {
+		display.drawBitmap(61,15,SFX_btn,20,8,1);
+		display.drawBitmap(75,17,SFX_one,5,5,1);
+  }
+  else if (fxbank3)
+  {
+    display.drawBitmap(82,15,SFX_btn,20,8,1);
 		  display.drawBitmap(61,17,SFX_two,5,5,1);
-		break;
-		case 3:
+  }
+  else if (fxbank4)
+  {
 		  display.drawBitmap(103,15,SFX_btn,20,8,1);
 		  display.drawBitmap(61,17,SFX_tree,5,5,1);
-		break;
-		default:
-		  fxbank = 0;
-		break;
+  }
+  else if (fxbank1)
+  {
 	}
 	
 	// draw mp3 file
@@ -179,5 +176,4 @@ void display_loop()
 	display.print(mp3file);
     display.display();
   }
-  */
 }

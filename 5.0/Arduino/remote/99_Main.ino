@@ -1,4 +1,5 @@
-void setup(){
+void setup()
+{
   //start serial
  display_init();
  serial_init();
